@@ -14,7 +14,8 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID || "mock-client-id",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "mock-client-secret",
     }),
-    CredentialsProvider({
+    ...(process.env.NODE_ENV !== "production" ? [
+      CredentialsProvider({
       name: "Mock Credentials (Testing)",
       credentials: {
         email: { label: "Email", type: "email", placeholder: "test@example.com" },
@@ -46,7 +47,8 @@ export const authOptions: NextAuthOptions = {
           dailyBudgetKg: user.dailyBudgetKg,
         };
       },
-    }),
+    })
+    ] : []),
   ],
   callbacks: {
     async jwt({ token, user, trigger, session }) {
