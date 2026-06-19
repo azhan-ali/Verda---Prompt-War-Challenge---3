@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# User project documents and local files
+Verda_PRD.docx
+Verda_PRD.md
+"VERDA_ROADMAP (2).md"
+VERDA_ROADMAP*.md
+dev.db
+extract_docx.py
