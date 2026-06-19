@@ -180,10 +180,52 @@ export default function InsightsPanel() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<InsightsData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const handleDownloadPdf = () => {
-    window.print();
+  const handleDownloadPdf = async () => {
+    const element = document.getElementById('verda-pdf-report');
+    if (!element) return;
+
+    setIsGeneratingPdf(true);
+    try {
+      const html2canvas = (await import('html2canvas')).default;
+      const { jsPDF } = await import('jspdf');
+
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      // If content is taller than one page, split across pages
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save('verda-carbon-intelligence-report.pdf');
+    } catch (err) {
+      console.error('PDF generation failed:', err);
+    } finally {
+      setIsGeneratingPdf(false);
+    }
   };
 
   const [loadingStep, setLoadingStep] = useState(0);
@@ -268,11 +310,21 @@ export default function InsightsPanel() {
             {data && (
               <button
                 onClick={handleDownloadPdf}
-                className="no-print flex items-center gap-2 px-5 py-4 rounded-2xl font-extrabold text-sm bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 hover:border-emerald-500/40 transition-all duration-200 active:scale-95 cursor-pointer shadow-sm"
+                disabled={isGeneratingPdf}
+                className="no-print flex items-center gap-2 px-5 py-4 rounded-2xl font-extrabold text-sm bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 hover:border-emerald-500/40 transition-all duration-200 active:scale-95 cursor-pointer shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
                 title="Download as PDF"
               >
-                <FileDown className="h-4 w-4" />
-                <span className="hidden sm:inline">Download PDF</span>
+                {isGeneratingPdf ? (
+                  <>
+                    <span className="w-3.5 h-3.5 rounded-full border-2 border-emerald-300 border-t-transparent animate-spin" />
+                    <span className="hidden sm:inline">Generating...</span>
+                  </>
+                ) : (
+                  <>
+                    <FileDown className="h-4 w-4" />
+                    <span className="hidden sm:inline">Download PDF</span>
+                  </>
+                )}
               </button>
             )}
             <button
