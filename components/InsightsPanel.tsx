@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Sparkles, BrainCircuit, RotateCcw, AlertCircle, Car, Leaf, Zap, TrendingDown, Trophy, Star, MapPin, FileDown } from "lucide-react";
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 interface InsightsTip {
   icon: string;
@@ -189,8 +191,6 @@ export default function InsightsPanel() {
 
     setIsGeneratingPdf(true);
     try {
-      const html2canvas = (await import('html2canvas')).default;
-      const { jsPDF } = await import('jspdf');
 
       const canvas = await html2canvas(element, {
         scale: 2,
@@ -221,8 +221,9 @@ export default function InsightsPanel() {
       }
 
       pdf.save('verda-carbon-intelligence-report.pdf');
-    } catch (err) {
+    } catch (err: any) {
       console.error('PDF generation failed:', err);
+      alert('PDF generation failed: ' + (err.message || String(err)));
     } finally {
       setIsGeneratingPdf(false);
     }
