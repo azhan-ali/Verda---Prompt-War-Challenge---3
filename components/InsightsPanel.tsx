@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Sparkles, BrainCircuit, RotateCcw, AlertCircle, Car, Leaf, Zap, TrendingDown, Trophy, Star, MapPin, FileDown } from "lucide-react";
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 
 interface InsightsTip {
@@ -191,32 +191,37 @@ export default function InsightsPanel() {
 
     setIsGeneratingPdf(true);
     try {
-
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
+      // Use html-to-image to avoid unsupported CSS color functions (like oklch) in html2canvas
+      const dataUrl = await toPng(element, {
+        quality: 1.0,
+        pixelRatio: 2,
         backgroundColor: '#ffffff',
-        logging: false,
+        style: {
+          transform: 'scale(1)',
+          transformOrigin: 'top left'
+        }
       });
 
-      const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = pageWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      // Calculate original element dimensions to maintain aspect ratio
+      const rect = element.getBoundingClientRect();
+      const imgHeight = (rect.height * imgWidth) / rect.width;
 
       // If content is taller than one page, split across pages
       let heightLeft = imgHeight;
       let position = 0;
 
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.addImage(dataUrl, 'PNG', 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
       while (heightLeft > 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        pdf.addImage(dataUrl, 'PNG', 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
 
