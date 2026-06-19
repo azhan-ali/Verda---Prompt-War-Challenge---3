@@ -513,6 +513,6 @@ Create a `.env.local` file in the root directory:
 ---
 
 <p align="center">
-  <strong>Built with 💚 for a greener future</strong><br/>
+  <strong>Built with 💚 by Azhan Ali for a greener future</strong><br/>
   <em>Verda — Track less. Live greener.</em>
 </p>
