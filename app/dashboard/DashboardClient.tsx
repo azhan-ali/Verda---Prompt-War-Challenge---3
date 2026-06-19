@@ -61,6 +61,7 @@ export default function DashboardClient({
     dietType: "vegetarian",
     dailyKm: 15,
     flightsPerYear: 1,
+    homeEnergy: "solarRenewable",
   });
 
   useEffect(() => {

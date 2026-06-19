@@ -18,6 +18,7 @@ export default function SimulatorPage() {
     dietType: "vegetarian",
     dailyKm: 15,
     flightsPerYear: 1,
+    homeEnergy: "solarRenewable",
   });
 
   const currentAnn = calculateAnnualEmissions(DEFAULT_CURRENT_LIFESTYLE);
