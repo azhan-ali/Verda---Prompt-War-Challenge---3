@@ -3,6 +3,7 @@ export interface SimulatorInputs {
   dietType: "meatLover" | "mixed" | "vegetarian" | "vegan";
   dailyKm: number;
   flightsPerYear: number;
+  homeEnergy: "highUsage" | "average" | "solarRenewable";
 }
 
 export const SIMULATOR_FACTORS = {
@@ -18,6 +19,11 @@ export const SIMULATOR_FACTORS = {
     vegetarian: 2.5,
     vegan: 1.2,
   },
+  homeEnergy: {
+    highUsage: 10.0, // kg CO2 per day
+    average: 5.0,
+    solarRenewable: 1.5,
+  },
   flight: 240.0,     // kg CO2 per flight (average 1200km flight)
 };
 
@@ -26,12 +32,14 @@ export const DEFAULT_CURRENT_LIFESTYLE: SimulatorInputs = {
   dietType: "mixed",
   dailyKm: 25,
   flightsPerYear: 4,
+  homeEnergy: "average",
 };
 
 export interface AnnualFootprint {
   transport: number;
   diet: number;
   flight: number;
+  homeEnergy: number;
   total: number;
 }
 
@@ -39,12 +47,14 @@ export function calculateAnnualEmissions(inputs: SimulatorInputs): AnnualFootpri
   const transportAnn = inputs.dailyKm * 365 * SIMULATOR_FACTORS.transport[inputs.transportMode];
   const dietAnn = SIMULATOR_FACTORS.diet[inputs.dietType] * 365;
   const flightAnn = inputs.flightsPerYear * SIMULATOR_FACTORS.flight;
+  const homeAnn = SIMULATOR_FACTORS.homeEnergy[inputs.homeEnergy] * 365;
 
   return {
     transport: Number(transportAnn.toFixed(2)),
     diet: Number(dietAnn.toFixed(2)),
     flight: Number(flightAnn.toFixed(2)),
-    total: Number((transportAnn + dietAnn + flightAnn).toFixed(2)),
+    homeEnergy: Number(homeAnn.toFixed(2)),
+    total: Number((transportAnn + dietAnn + flightAnn + homeAnn).toFixed(2)),
   };
 }
 

@@ -56,6 +56,12 @@ export default function Navbar() {
         {/* Center: Nav links */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
           <Link
+            href="/#workflow"
+            className={`transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[#059669] focus-visible:ring-offset-2 focus-visible:outline-none rounded-md text-[#374151] hover:text-[#059669]`}
+          >
+            How it Works
+          </Link>
+          <Link
             href="/dashboard"
             className={`transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[#059669] focus-visible:ring-offset-2 focus-visible:outline-none rounded-md ${
               isActive("/dashboard", "")

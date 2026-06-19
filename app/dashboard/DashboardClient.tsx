@@ -19,6 +19,7 @@ import {
   calculateSavings, 
   DEFAULT_CURRENT_LIFESTYLE 
 } from "@/lib/simulatorMath";
+import { CITY_BASELINES } from "@/lib/cityBaselines";
 
 interface DashboardClientProps {
   session: Session;
@@ -48,6 +49,12 @@ export default function DashboardClient({
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<"dashboard" | "simulator" | "insights">("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const allCitiesList = Object.values(CITY_BASELINES).filter(c => c.name !== "India Average");
+  const suggestions = allCitiesList.filter(c => 
+    c.name.toLowerCase().includes(customCity.toLowerCase())
+  ).slice(0, 4);
 
   const [proposedInputs, setProposedInputs] = useState<SimulatorInputs>({
     transportMode: "electricCar",
@@ -454,8 +461,11 @@ export default function DashboardClient({
                     value={customCity}
                     onChange={(e) => {
                       setCustomCity(e.target.value);
+                      setShowSuggestions(true);
                       if (error) setError(null);
                     }}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && customCity.trim() && !loading) {
                         handleCitySelect(customCity.trim());
@@ -465,6 +475,26 @@ export default function DashboardClient({
                     disabled={loading}
                     className="w-full rounded-2xl border border-gray-200 bg-white/80 p-4 pl-12 text-sm font-semibold text-[#111827] focus:outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] transition-all disabled:bg-gray-50 disabled:text-gray-400"
                   />
+                  {showSuggestions && customCity && suggestions.length > 0 && (
+                    <ul className="absolute z-20 mt-2 w-full rounded-2xl border border-gray-200 bg-white/95 backdrop-blur-xl shadow-xl overflow-hidden divide-y divide-gray-100 animate-in fade-in zoom-in duration-200">
+                      {suggestions.map((suggestion) => (
+                        <li 
+                          key={suggestion.name}
+                          onClick={() => {
+                            setCustomCity(suggestion.name);
+                            setShowSuggestions(false);
+                          }}
+                          className="px-4 py-3 hover:bg-emerald-50 cursor-pointer flex justify-between items-center transition-colors"
+                        >
+                          <div>
+                            <span className="block text-sm font-semibold text-gray-900">{suggestion.name}</span>
+                            <span className="block text-[10px] text-gray-400 uppercase tracking-wider">{suggestion.description}</span>
+                          </div>
+                          <span className="text-xs font-bold text-[#059669] bg-[#D1FAE5] px-2.5 py-0.5 rounded-full">{suggestion.baselineKg} kg</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
                 <button
                   onClick={() => {

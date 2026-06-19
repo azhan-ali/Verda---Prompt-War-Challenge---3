@@ -1,6 +1,6 @@
 "use client";
 
-import { Mic, TreePine, Sparkles } from "lucide-react";
+import { Mic, TreePine, Sparkles, Receipt, Flame, SlidersHorizontal } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function FeaturesSection() {
@@ -19,6 +19,21 @@ export default function FeaturesSection() {
       icon: <Sparkles className="h-6 w-6 text-[#059669]" />,
       title: "AI Insights",
       description: "Personalized recommendations streamed instantly from Gemini, designed for your local city baseline.",
+    },
+    {
+      icon: <Receipt className="h-6 w-6 text-[#059669]" />,
+      title: "Carbon Receipt",
+      description: "Get a detailed breakdown of your emissions after every log and compare with your city average.",
+    },
+    {
+      icon: <Flame className="h-6 w-6 text-[#059669]" />,
+      title: "Green Streak",
+      description: "Build momentum with our premium activity grid. Maintain your eco-streak and see your progress.",
+    },
+    {
+      icon: <SlidersHorizontal className="h-6 w-6 text-[#059669]" />,
+      title: "What-If Simulator",
+      description: "Play with interactive sliders to visualize instantly how lifestyle changes impact your carbon footprint.",
     },
   ];
 

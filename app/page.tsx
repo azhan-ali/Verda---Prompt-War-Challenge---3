@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import FeaturesSection from "@/components/landing/FeaturesSection";
-import HowItWorks from "@/components/landing/HowItWorks";
+import WorkflowSection from "@/components/landing/WorkflowSection";
 import PreviewSection from "@/components/landing/PreviewSection";
 import CTABanner from "@/components/landing/CTABanner";
 
@@ -19,8 +19,8 @@ export default function Home() {
       {/* Features Showcase */}
       <FeaturesSection />
 
-      {/* How it Works Workflow */}
-      <HowItWorks />
+      {/* Workflow Section */}
+      <WorkflowSection />
 
       {/* You vs City Benchmark Preview */}
       <PreviewSection />

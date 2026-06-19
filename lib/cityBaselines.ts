@@ -25,6 +25,61 @@ export const CITY_BASELINES: Record<string, CityBaseline> = {
     baselineKg: 4.5,
     description: "Eastern Plains Baseline"
   },
+  Chennai: {
+    name: "Chennai",
+    baselineKg: 4.8,
+    description: "Southern Metro Baseline"
+  },
+  Kolkata: {
+    name: "Kolkata",
+    baselineKg: 4.5,
+    description: "Eastern Metro Baseline"
+  },
+  Hyderabad: {
+    name: "Hyderabad",
+    baselineKg: 4.7,
+    description: "Deccan Tech Hub Baseline"
+  },
+  Pune: {
+    name: "Pune",
+    baselineKg: 4.6,
+    description: "Western Hub Baseline"
+  },
+  Ahmedabad: {
+    name: "Ahmedabad",
+    baselineKg: 4.9,
+    description: "Industrial Hub Baseline"
+  },
+  Surat: {
+    name: "Surat",
+    baselineKg: 4.8,
+    description: "Commercial Hub Baseline"
+  },
+  Jaipur: {
+    name: "Jaipur",
+    baselineKg: 4.5,
+    description: "Desert Region Baseline"
+  },
+  Lucknow: {
+    name: "Lucknow",
+    baselineKg: 4.5,
+    description: "Northern Plains Baseline"
+  },
+  Indore: {
+    name: "Indore",
+    baselineKg: 4.6,
+    description: "Central Hub Baseline"
+  },
+  Guwahati: {
+    name: "Guwahati",
+    baselineKg: 4.4,
+    description: "Northeastern Baseline"
+  },
+  Chandigarh: {
+    name: "Chandigarh",
+    baselineKg: 4.8,
+    description: "Planned City Baseline"
+  },
   India: {
     name: "India Average",
     baselineKg: 4.7,

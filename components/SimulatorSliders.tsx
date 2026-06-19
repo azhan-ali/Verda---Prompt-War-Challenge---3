@@ -2,7 +2,7 @@
 
 import React from "react";
 import { SimulatorInputs } from "../lib/simulatorMath";
-import { Car, Bike, Leaf, Plane, Globe, Utensils } from "lucide-react";
+import { Car, Bike, Leaf, Plane, Globe, Utensils, Zap, Sun } from "lucide-react";
 
 interface SimulatorSlidersProps {
   inputs: SimulatorInputs;
@@ -31,9 +31,15 @@ export default function SimulatorSliders({ inputs, onChange }: SimulatorSlidersP
     { value: "vegan", label: "Vegan Plan", icon: <Leaf className="h-4 w-4" /> },
   ] as const;
 
+  const homeEnergyOptions = [
+    { value: "highUsage", label: "High Usage", icon: <Zap className="h-4 w-4" /> },
+    { value: "average", label: "Average Grid", icon: <Zap className="h-4 w-4" /> },
+    { value: "solarRenewable", label: "Solar/Eco", icon: <Sun className="h-4 w-4" /> },
+  ] as const;
+
   return (
-    <div className="space-y-8 bg-white/70 backdrop-blur-md border border-[#E5E7EB] rounded-3xl p-6 shadow-sm">
-      <h2 className="text-xl font-bold text-gray-800 border-b border-gray-100 pb-3 flex items-center gap-2">
+    <div className="space-y-8 bg-white/40 backdrop-blur-xl border border-white/60 rounded-3xl p-6 shadow-xl ring-1 ring-black/5">
+      <h2 className="text-xl font-bold text-gray-800 border-b border-gray-100/50 pb-3 flex items-center gap-2">
         ⚙️ Simulate New Lifestyle
       </h2>
 
@@ -73,6 +79,29 @@ export default function SimulatorSliders({ inputs, onChange }: SimulatorSlidersP
               onClick={() => updateInput("dietType", opt.value)}
               className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
                 inputs.dietType === opt.value
+                  ? "bg-emerald-600 text-white shadow-sm scale-102"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/50"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 3. Home Energy Segmented Control */}
+      <div className="space-y-3.5">
+        <label className="block text-sm font-bold text-gray-700 flex items-center gap-2">
+          ⚡ Home Energy
+        </label>
+        <div className="grid grid-cols-3 gap-2 bg-gray-100/50 p-1.5 rounded-2xl border border-gray-200/40">
+          {homeEnergyOptions.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => updateInput("homeEnergy", opt.value)}
+              className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                inputs.homeEnergy === opt.value
                   ? "bg-emerald-600 text-white shadow-sm scale-102"
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/50"
               }`}
