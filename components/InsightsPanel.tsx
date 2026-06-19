@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Sparkles, BrainCircuit, RotateCcw, AlertCircle, Car, Leaf, Zap, TrendingDown, Trophy, Star, MapPin } from "lucide-react";
+import { Sparkles, BrainCircuit, RotateCcw, AlertCircle, Car, Leaf, Zap, TrendingDown, Trophy, Star, MapPin, FileDown } from "lucide-react";
 
 interface InsightsTip {
   icon: string;
@@ -182,6 +182,10 @@ export default function InsightsPanel() {
   const [error, setError] = useState<string | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
+  const handleDownloadPdf = () => {
+    window.print();
+  };
+
   const [loadingStep, setLoadingStep] = useState(0);
   const loadingMessages = [
     "Reading carbon twin state...",
@@ -260,32 +264,44 @@ export default function InsightsPanel() {
             </div>
           </div>
 
-          <button
-            onClick={generateInsights}
-            disabled={loading}
-            tabIndex={0}
-            className={`relative overflow-hidden group shrink-0 px-8 py-4 rounded-2xl font-extrabold text-sm select-none transition-all duration-300 active:scale-95 cursor-pointer shadow-lg flex items-center justify-center gap-2.5 ${
-              loading
-                ? "bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed"
-                : "bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 hover:opacity-95 hover:shadow-emerald-500/20"
-            }`}
-          >
-            {loading ? (
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1" aria-hidden>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "0ms" }} />
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "150ms" }} />
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "300ms" }} />
-                </div>
-                <span>Analysing your week...</span>
-              </div>
-            ) : (
-              <>
-                <Sparkles className="h-4.5 w-4.5 animate-spin" style={{ animationDuration: "3s" }} />
-                <span>{data ? "Regenerate Insights" : "Generate My Insights"}</span>
-              </>
+          <div className="flex items-center gap-3 shrink-0">
+            {data && (
+              <button
+                onClick={handleDownloadPdf}
+                className="no-print flex items-center gap-2 px-5 py-4 rounded-2xl font-extrabold text-sm bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 hover:border-emerald-500/40 transition-all duration-200 active:scale-95 cursor-pointer shadow-sm"
+                title="Download as PDF"
+              >
+                <FileDown className="h-4 w-4" />
+                <span className="hidden sm:inline">Download PDF</span>
+              </button>
             )}
-          </button>
+            <button
+              onClick={generateInsights}
+              disabled={loading}
+              tabIndex={0}
+              className={`no-print relative overflow-hidden group shrink-0 px-8 py-4 rounded-2xl font-extrabold text-sm select-none transition-all duration-300 active:scale-95 cursor-pointer shadow-lg flex items-center justify-center gap-2.5 ${
+                loading
+                  ? "bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed"
+                  : "bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 hover:opacity-95 hover:shadow-emerald-500/20"
+              }`}
+            >
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1" aria-hidden>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: "300ms" }} />
+                  </div>
+                  <span>Analysing your week...</span>
+                </div>
+              ) : (
+                <>
+                  <Sparkles className="h-4.5 w-4.5 animate-spin" style={{ animationDuration: "3s" }} />
+                  <span>{data ? "Regenerate Insights" : "Generate My Insights"}</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -342,7 +358,7 @@ export default function InsightsPanel() {
       {/* Results */}
       {data && (
         <div
-          id="insights-output-container"
+          id="verda-pdf-report"
           aria-live="polite"
           className="space-y-8 animate-fade-in"
         >

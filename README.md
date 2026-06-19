@@ -187,8 +187,8 @@ A **Recharts stacked bar chart** shows real-time "Current vs. Proposed" comparis
 
 ---
 
-### 7. ✨ On-Demand AI Insights — Live Streaming
-> *Personalized climate intelligence, streamed in real-time*
+### 7. ✨ On-Demand AI Insights — Live Streaming + PDF Export
+> *Personalized climate intelligence, streamed in real-time and downloadable as a premium report*
 
 Press "✨ Generate My Insights" and watch Gemini analyze your last 7 days of activity data. The response streams in token-by-token (ChatGPT-style typing effect) using Server-Sent Events (SSE).
 
@@ -198,6 +198,21 @@ Press "✨ Generate My Insights" and watch Gemini analyze your last 7 days of ac
 - Returns a `ReadableStream` as `text/event-stream`
 - Frontend renders chunks via `react-markdown` as they arrive
 - `aria-live="polite"` ensures screen readers announce updates
+
+### 📄 Premium PDF Export
+Once insights are generated, users can download a **stunning branded PDF report** with one click:
+
+- **"Download PDF"** button appears in the Insights header after report generation
+- Uses the browser's native `window.print()` API — **zero extra dependencies**
+- Custom `@media print` CSS in `globals.css` transforms the UI into a premium A4 report:
+  - 🌈 Emerald-to-teal gradient header strip at the top
+  - 🟢 Colored category stat pills (Transport/Food/Energy) with progress bars
+  - 🏆 Eco Score ring rendered in full color
+  - 📋 Action tips with colored left-border accents (Emerald / Sky / Purple)
+  - 🌿 Full gradient closing motivational banner
+  - 🔖 Verda branded footer watermark with generation date
+  - All UI chrome (navbar, sidebar, buttons) hidden — only the report prints
+- `@page { size: A4; margin: 15mm 12mm; }` for perfect paper sizing
 
 ---
 

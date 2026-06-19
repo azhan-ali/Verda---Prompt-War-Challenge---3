@@ -166,3 +166,191 @@
 .animate-fadeIn {
   animation: fadeIn 0.25s ease-out forwards;
 }
+
+/* ============================================================
+   VERDA PREMIUM PDF PRINT STYLES
+   Triggered by window.print() from InsightsPanel
+   ============================================================ */
+@media print {
+  /* Hide absolutely everything except the report */
+  body > *:not(#__next),
+  nav,
+  header,
+  aside,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Reset body for clean white print */
+  body {
+    background: white !important;
+    background-image: none !important;
+    background-attachment: unset !important;
+    color: #111827 !important;
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Show ONLY the report */
+  #verda-pdf-report {
+    display: block !important;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* --- PDF COVER HEADER --- */
+  #verda-pdf-report::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #059669, #10b981, #34d399, #6ee7b7);
+    border-radius: 0 0 4px 4px;
+    margin-bottom: 28px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* General card reset */
+  #verda-pdf-report .rounded-3xl,
+  #verda-pdf-report .rounded-2xl {
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+    break-inside: avoid;
+    margin-bottom: 16px !important;
+    padding: 20px !important;
+    background: white !important;
+  }
+
+  /* Summary header - keep emerald accent */
+  #verda-pdf-report .rounded-3xl:first-child {
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5) !important;
+    border: 2px solid #d1fae5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Typography */
+  #verda-pdf-report h2 {
+    color: #064e3b !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+  }
+
+  #verda-pdf-report h3 {
+    color: #059669 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+  }
+
+  #verda-pdf-report h4 {
+    color: #1e293b !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+  }
+
+  #verda-pdf-report p {
+    color: #374151 !important;
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Stat pills — keep colored backgrounds */
+  #verda-pdf-report .bg-emerald-50 {
+    background: #f0fdf4 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #verda-pdf-report .bg-sky-50 {
+    background: #f0f9ff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #verda-pdf-report .bg-purple-50 {
+    background: #faf5ff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Progress bars — force colors to print */
+  #verda-pdf-report [style*="background-color"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Tip cards — colored left border accent */
+  #verda-pdf-report .border-emerald-100 {
+    border-left: 4px solid #059669 !important;
+    background: #f0fdf4 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #verda-pdf-report .border-sky-100 {
+    border-left: 4px solid #0284c7 !important;
+    background: #f0f9ff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #verda-pdf-report .border-purple-100 {
+    border-left: 4px solid #7c3aed !important;
+    background: #faf5ff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Closing banner gradient — force print */
+  #verda-pdf-report .from-emerald-600 {
+    background: linear-gradient(135deg, #059669, #0d9488) !important;
+    color: white !important;
+    border: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #verda-pdf-report .from-emerald-600 p,
+  #verda-pdf-report .from-emerald-600 span {
+    color: white !important;
+  }
+
+  /* Score ring — keep color */
+  #verda-pdf-report svg circle {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Badge pills */
+  #verda-pdf-report .bg-emerald-50.border-emerald-100 {
+    background: #d1fae5 !important;
+    border-color: #a7f3d0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* PDF FOOTER watermark */
+  #verda-pdf-report::after {
+    content: '🌿 Verda — Your AI Carbon Intelligence Report   |   Generated ' attr(data-date) '   |   verda.app';
+    display: block;
+    margin-top: 28px;
+    padding-top: 14px;
+    border-top: 2px solid #d1fae5;
+    text-align: center;
+    font-size: 10px;
+    color: #6b7280;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Paper size & margins */
+  @page {
+    size: A4;
+    margin: 15mm 12mm;
+  }
+}
