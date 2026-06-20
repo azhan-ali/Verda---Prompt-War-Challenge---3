@@ -3,6 +3,34 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Mic, Send, AlertCircle, Sparkles, CheckCircle2 } from "lucide-react";
 
+interface SpeechRecognitionEvent {
+  resultIndex: number;
+  results: {
+    length: number;
+    [index: number]: {
+      isFinal: boolean;
+      [index: number]: { transcript: string };
+    };
+  };
+}
+
+interface SpeechRecognitionErrorEvent {
+  error: string;
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  abort(): void;
+  onstart: ((this: SpeechRecognition, ev: Event) => void) | null;
+  onresult: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => void) | null;
+  onerror: ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => void) | null;
+  onend: ((this: SpeechRecognition, ev: Event) => void) | null;
+}
+
 interface MagicInputProps {
   onActivityLogged?: () => void;
 }
@@ -15,14 +43,15 @@ export default function MagicInput({ onActivityLogged }: MagicInputProps) {
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Initialize SpeechRecognition
   useEffect(() => {
     if (typeof window !== "undefined") {
       const SpeechRecognition =
-        (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        (window as unknown as { SpeechRecognition: new () => SpeechRecognition }).SpeechRecognition || 
+        (window as unknown as { webkitSpeechRecognition: new () => SpeechRecognition }).webkitSpeechRecognition;
       
       if (SpeechRecognition) {
         const rec = new SpeechRecognition();
@@ -36,7 +65,7 @@ export default function MagicInput({ onActivityLogged }: MagicInputProps) {
           setSuccessMsg(null);
         };
 
-        rec.onresult = (event: any) => {
+        rec.onresult = (event: SpeechRecognitionEvent) => {
           let interim = "";
           let final = "";
 
@@ -55,7 +84,7 @@ export default function MagicInput({ onActivityLogged }: MagicInputProps) {
           setInterimTranscript(interim);
         };
 
-        rec.onerror = (event: any) => {
+        rec.onerror = (event: SpeechRecognitionErrorEvent) => {
           console.error("Speech recognition error: ", event);
           if (event.error !== "no-speech") {
             setError(`Voice error: ${event.error}`);
@@ -142,8 +171,8 @@ export default function MagicInput({ onActivityLogged }: MagicInputProps) {
       setTimeout(() => {
         setSuccessMsg(null);
       }, 4000);
-    } catch (err: any) {
-      setError(err.message || "An error occurred. Please try again.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }

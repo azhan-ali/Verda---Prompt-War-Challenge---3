@@ -52,10 +52,10 @@ export async function POST(request: Request) {
         dailyBudgetKg: updatedUser.dailyBudgetKg,
       },
     });
-  } catch (error: any) {
-    console.error("Failed to update profile:", error);
+  } catch (error: unknown) {
+    console.error("Profile update error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: error instanceof Error ? error.message : "Internal server error" },
       { status: 500 }
     );
   }

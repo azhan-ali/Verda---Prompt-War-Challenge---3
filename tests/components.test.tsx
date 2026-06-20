@@ -15,7 +15,7 @@ global.IntersectionObserver = class IntersectionObserver {
   disconnect() {}
   observe() {}
   unobserve() {}
-} as any;
+} as unknown as typeof IntersectionObserver;
 
 // Mock next-auth/react
 vi.mock("next-auth/react", () => ({

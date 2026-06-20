@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import MagicInput from "@/components/MagicInput";
 import CarbonTwin from "@/components/CarbonTwin";
 import BaselineBenchmark from "@/components/BaselineBenchmark";
-import CarbonReceipt from "@/components/CarbonReceipt";
+import CarbonReceipt, { ActivityItem } from "@/components/CarbonReceipt";
 import GreenStreak from "@/components/GreenStreak";
 import SimulatorSliders from "@/components/SimulatorSliders";
 import SimulatorChart from "@/components/SimulatorChart";
@@ -24,7 +24,7 @@ import { CITY_BASELINES } from "@/lib/cityBaselines";
 interface DashboardClientProps {
   session: Session;
   todayEmissionsKg: number;
-  initialActivities: any[];
+  initialActivities: ActivityItem[];
 }
 
 export default function DashboardClient({
@@ -65,6 +65,7 @@ export default function DashboardClient({
   });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     
     const handleURLTab = () => {
@@ -72,7 +73,7 @@ export default function DashboardClient({
         const params = new URLSearchParams(window.location.search);
         const tab = params.get("tab");
         if (tab === "insights" || tab === "simulator" || tab === "dashboard") {
-          setActiveTab(tab as any);
+          setActiveTab(tab);
         }
       }
     };
@@ -115,8 +116,8 @@ export default function DashboardClient({
 
       await update({ city });
       window.location.reload();
-    } catch (err: any) {
-      setError(err.message || "An error occurred. Please try again.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An error occurred. Please try again.");
       setLoading(false);
     }
   };
@@ -276,7 +277,7 @@ export default function DashboardClient({
                     Welcome back, {user?.name || "Green Champion"}!
                   </h1>
                   <p className="mt-2 text-lg text-gray-500">
-                    Here's the current state of your zero-friction carbon twin.
+                    Here&apos;s the current state of your zero-friction carbon twin.
                   </p>
                 </div>
 

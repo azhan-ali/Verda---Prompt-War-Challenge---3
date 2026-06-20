@@ -18,7 +18,7 @@ global.IntersectionObserver = class IntersectionObserver {
   disconnect() {}
   observe() {}
   unobserve() {}
-} as any;
+} as unknown as typeof IntersectionObserver;
 
 // Mock next-auth/react
 vi.mock("next-auth/react", () => ({
@@ -35,13 +35,13 @@ vi.mock("next/navigation", () => ({
 // Mock Recharts to avoid responsive layout issues in JSDOM
 vi.mock("recharts", () => {
   return {
-    ResponsiveContainer: ({ children }: any) => <div className="mock-container">{children}</div>,
-    BarChart: ({ children, data }: any) => (
+    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => <div className="mock-container">{children}</div>,
+    BarChart: ({ children, data }: { children: React.ReactNode; data: unknown }) => (
       <div className="mock-bar-chart" data-testid="mock-bar-chart" data-data={JSON.stringify(data)}>
         {children}
       </div>
     ),
-    Bar: ({ dataKey }: any) => <div className="mock-bar" data-testid={`mock-bar-${dataKey}`} />,
+    Bar: ({ dataKey }: { dataKey: string }) => <div className="mock-bar" data-testid={`mock-bar-${dataKey}`} />,
     XAxis: () => <div className="mock-xaxis" />,
     YAxis: () => <div className="mock-yaxis" />,
     Tooltip: () => <div className="mock-tooltip" />,

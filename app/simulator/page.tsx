@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import SimulatorSliders from "@/components/SimulatorSliders";
 import SimulatorChart from "@/components/SimulatorChart";
@@ -28,7 +28,9 @@ export default function SimulatorPage() {
   return (
     <div className="relative min-h-screen bg-transparent pb-16">
       {/* Global Navbar */}
-      <Navbar />
+      <Suspense fallback={<div className="h-20" />}>
+        <Navbar />
+      </Suspense>
 
       {/* Main content wrapper */}
       <main className="pt-28 px-6 max-w-7xl mx-auto w-full relative z-10">

@@ -274,7 +274,12 @@ export async function POST(req: NextRequest) {
     let foodKg = 0;
     let energyKg = 0;
 
-    const breakdown: any = {
+    const breakdown: {
+      transport: { mode: string; distanceKm: number; factor: number; co2Kg: number }[];
+      food: { type: string; servings: number; factor: number; co2Kg: number }[];
+      energy: { type: string; amount: number; factor: number; co2Kg: number }[];
+      explanation: string;
+    } = {
       transport: [],
       food: [],
       energy: [],
@@ -342,10 +347,10 @@ export async function POST(req: NextRequest) {
       success: true,
       activity: savedActivity
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error logging activity: ", error);
     return NextResponse.json(
-      { error: error.message || "An unexpected error occurred." },
+      { error: error instanceof Error ? error.message : "An unexpected error occurred." },
       { status: 500 }
     );
   }

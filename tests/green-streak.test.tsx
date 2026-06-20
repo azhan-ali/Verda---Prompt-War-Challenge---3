@@ -23,7 +23,7 @@ describe("GreenStreak Component", () => {
     global.fetch = vi.fn().mockImplementation(() =>
       Promise.resolve({
         json: () => Promise.resolve(mockStreakData),
-      } as any)
+      } as unknown as Response)
     );
   });
 

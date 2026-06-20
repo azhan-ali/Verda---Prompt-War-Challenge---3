@@ -1,5 +1,6 @@
 "use client";
 
+import React, { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import FeaturesSection from "@/components/landing/FeaturesSection";
@@ -11,7 +12,9 @@ export default function Home() {
   return (
     <div className="relative min-h-screen bg-transparent">
       {/* Global Navbar */}
-      <Navbar />
+      <Suspense fallback={<div className="h-20" />}>
+        <Navbar />
+      </Suspense>
 
       {/* Hero Section */}
       <Hero />

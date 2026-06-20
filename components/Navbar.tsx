@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function Navbar() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,13 +23,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const [activeTabFromUrl, setActiveTabFromUrl] = useState("");
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      setActiveTabFromUrl(params.get("tab") || "");
-    }
-  }, [pathname]);
+  const activeTabFromUrl = searchParams?.get("tab") || "";
 
   const isActive = (path: string, tab?: string) => {
     if (tab !== undefined) {

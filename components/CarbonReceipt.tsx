@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Share2, Clipboard, CheckCircle2 } from "lucide-react";
 
-interface ActivityItem {
+export interface ActivityItem {
   id: string;
   description: string;
   transportKg: number;

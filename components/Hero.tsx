@@ -160,7 +160,7 @@ export default function Hero() {
         sat.angle += sat.speed;
 
         // Calculate raw 3D position
-        let sx = Math.cos(sat.angle) * sat.orbitRadius;
+        const sx = Math.cos(sat.angle) * sat.orbitRadius;
         let sz = Math.sin(sat.angle) * sat.orbitRadius;
         let sy = 0;
 

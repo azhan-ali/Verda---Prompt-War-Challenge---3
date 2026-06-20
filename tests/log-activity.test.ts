@@ -42,7 +42,7 @@ describe("POST /api/log-activity", () => {
   it("should return 400 if text is missing or invalid", async () => {
     vi.mocked(getServerSession).mockResolvedValueOnce({
       user: { id: "user-1", email: "test@example.com" },
-    } as any);
+    } as unknown as import("next-auth").Session);
 
     const req = new Request("http://localhost/api/log-activity", {
       method: "POST",
@@ -59,10 +59,10 @@ describe("POST /api/log-activity", () => {
   it("should sanitize the input text and extract emissions correctly using fallback", async () => {
     vi.mocked(getServerSession).mockResolvedValueOnce({
       user: { id: "user-1", email: "test@example.com" },
-    } as any);
+    } as unknown as import("next-auth").Session);
 
     // Mock Prisma activity creation dynamically
-    vi.mocked(prisma.activity.create).mockImplementation(async ({ data }: any) => {
+    vi.mocked(prisma.activity.create).mockImplementation(async ({ data }: { data: import("@prisma/client").Prisma.ActivityCreateArgs['data'] }) => {
       return {
         id: "activity-1",
         ...data,
@@ -87,9 +87,9 @@ describe("POST /api/log-activity", () => {
   it("should calculate correct totals for multiple categories", async () => {
     vi.mocked(getServerSession).mockResolvedValueOnce({
       user: { id: "user-1", email: "test@example.com" },
-    } as any);
+    } as unknown as import("next-auth").Session);
 
-    vi.mocked(prisma.activity.create).mockImplementation(async ({ data }: any) => {
+    vi.mocked(prisma.activity.create).mockImplementation(async ({ data }: { data: import("@prisma/client").Prisma.ActivityCreateArgs['data'] }) => {
       return {
         id: "activity-2",
         ...data,

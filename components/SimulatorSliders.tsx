@@ -2,7 +2,7 @@
 
 import React from "react";
 import { SimulatorInputs } from "../lib/simulatorMath";
-import { Car, Bike, Leaf, Plane, Globe, Utensils, Zap, Sun } from "lucide-react";
+import { Car, Bike, Leaf, Globe, Utensils, Zap, Sun } from "lucide-react";
 
 interface SimulatorSlidersProps {
   inputs: SimulatorInputs;
@@ -10,7 +10,7 @@ interface SimulatorSlidersProps {
 }
 
 export default function SimulatorSliders({ inputs, onChange }: SimulatorSlidersProps) {
-  const updateInput = (key: keyof SimulatorInputs, value: any) => {
+  const updateInput = <K extends keyof SimulatorInputs>(key: K, value: SimulatorInputs[K]) => {
     onChange({
       ...inputs,
       [key]: value,

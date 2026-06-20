@@ -42,7 +42,7 @@ describe("POST /api/user/update-profile", () => {
   it("should return 400 if city is invalid", async () => {
     vi.mocked(getServerSession).mockResolvedValueOnce({
       user: { id: "user-1", email: "test@example.com" },
-    } as any);
+    } as unknown as import("next-auth").Session);
 
     const req = new Request("http://localhost/api/user/update-profile", {
       method: "POST",
@@ -59,7 +59,7 @@ describe("POST /api/user/update-profile", () => {
   it("should return 200 and update database if request is valid", async () => {
     vi.mocked(getServerSession).mockResolvedValueOnce({
       user: { id: "user-1", email: "test@example.com" },
-    } as any);
+    } as unknown as import("next-auth").Session);
 
     vi.mocked(prisma.user.update).mockResolvedValueOnce({
       id: "user-1",
@@ -68,7 +68,7 @@ describe("POST /api/user/update-profile", () => {
       city: "Delhi",
       dailyBudgetKg: 10.0,
       createdAt: new Date(),
-    } as any);
+    } as unknown as import("@prisma/client").User);
 
     const req = new Request("http://localhost/api/user/update-profile", {
       method: "POST",

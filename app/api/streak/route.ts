@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
 
     // Calculate streak backwards from today
     let streak = 0;
-    let checkDate = new Date();
+    const checkDate = new Date();
     
     for (let i = 0; i < 30; i++) {
       const key = formatDateKey(checkDate);
@@ -95,10 +95,10 @@ export async function GET(req: NextRequest) {
       budget,
       history
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching streak history: ", error);
     return NextResponse.json(
-      { error: error.message || "An unexpected error occurred." },
+      { error: error instanceof Error ? error.message : "An unexpected error occurred." },
       { status: 500 }
     );
   }

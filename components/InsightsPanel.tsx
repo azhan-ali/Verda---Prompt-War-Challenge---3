@@ -226,9 +226,9 @@ export default function InsightsPanel() {
       }
 
       pdf.save('verda-carbon-intelligence-report.pdf');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('PDF generation failed:', err);
-      alert('PDF generation failed: ' + (err.message || String(err)));
+      alert('PDF generation failed: ' + (err instanceof Error ? err.message : String(err)));
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -247,17 +247,17 @@ export default function InsightsPanel() {
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (loading) {
-      setLoadingStep(0);
       interval = setInterval(() => {
         setLoadingStep((prev) => (prev + 1) % loadingMessages.length);
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [loading]);
+  }, [loading, loadingMessages.length]);
 
   const generateInsights = async () => {
     if (abortControllerRef.current) abortControllerRef.current.abort();
     setLoading(true);
+    setLoadingStep(0);
     setData(null);
     setError(null);
 
@@ -269,9 +269,12 @@ export default function InsightsPanel() {
       if (!response.ok) throw new Error("Failed to fetch insights. Please try again.");
       const json: InsightsData = await response.json();
       setData(json);
-    } catch (err: any) {
-      if (err.name !== "AbortError") {
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name !== "AbortError") {
         setError(err.message || "An error occurred.");
+        console.error(err);
+      } else if (!(err instanceof Error)) {
+        setError("An error occurred.");
         console.error(err);
       }
     } finally {
@@ -546,7 +549,7 @@ export default function InsightsPanel() {
           </div>
           <h3 className="text-xl font-bold text-slate-800 mb-2">Your insights await</h3>
           <p className="text-sm text-slate-500 max-w-md leading-relaxed mb-6 font-medium">
-            Click <strong className="text-emerald-600 font-extrabold">"Generate My Insights"</strong> above to get a personalized AI-powered carbon intelligence report based on your recent activity data.
+            Click <strong className="text-emerald-600 font-extrabold">&quot;Generate My Insights&quot;</strong> above to get a personalized AI-powered carbon intelligence report based on your recent activity data.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400 font-bold border-t border-slate-100 pt-6 w-full max-w-sm">
             <span className="flex items-center gap-1.5">

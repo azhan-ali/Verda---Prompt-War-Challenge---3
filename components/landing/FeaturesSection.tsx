@@ -62,7 +62,7 @@ export default function FeaturesSection() {
             Everything you need to live greener
           </p>
           <p className="mt-4 text-lg text-gray-500">
-            We've stripped away the complexity of carbon tracking so you can focus on making an impact.
+            We&apos;ve stripped away the complexity of carbon tracking so you can focus on making an impact.
           </p>
         </div>
 

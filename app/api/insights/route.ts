@@ -154,10 +154,10 @@ Return ONLY a valid JSON object (no markdown, no code blocks) in this EXACT stru
       console.error("Gemini failed, using fallback:", geminiErr);
       return NextResponse.json(buildFallback());
     }
-  } catch (error: any) {
-    console.error("Error generating insights:", error);
+  } catch (error: unknown) {
+    console.error("Error generating insights: ", error);
     return NextResponse.json(
-      { error: error.message || "An unexpected error occurred." },
+      { error: error instanceof Error ? error.message : "An unexpected error occurred." },
       { status: 500 }
     );
   }

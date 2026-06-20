@@ -22,7 +22,7 @@ export default function PreviewSection() {
         {/* Mock comparison card */}
         <div className="mx-auto max-w-xl rounded-3xl border border-[#E5E7EB] bg-white/70 backdrop-blur-md p-8 shadow-sm relative overflow-hidden">
           <div className="flex items-center justify-between mb-6">
-            <span className="text-sm font-semibold text-gray-500">TODAY'S COMPARISON</span>
+            <span className="text-sm font-semibold text-gray-500">TODAY&apos;S COMPARISON</span>
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">
               Better than 65% of city
             </span>

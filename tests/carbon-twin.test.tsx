@@ -7,8 +7,8 @@ import React from "react";
 // Mock Recharts to avoid responsive layout issues in JSDOM
 vi.mock("recharts", () => {
   return {
-    ResponsiveContainer: ({ children }: any) => <div className="mock-container">{children}</div>,
-    RadialBarChart: ({ children }: any) => <svg className="mock-chart">{children}</svg>,
+    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => <div className="mock-container">{children}</div>,
+    RadialBarChart: ({ children }: { children: React.ReactNode }) => <svg className="mock-chart">{children}</svg>,
     RadialBar: () => <g className="mock-bar"></g>,
     PolarAngleAxis: () => <g className="mock-axis"></g>,
   };
