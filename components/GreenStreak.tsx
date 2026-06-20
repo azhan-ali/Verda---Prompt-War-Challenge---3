@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Flame, Info, CheckCircle2 } from "lucide-react";
+import { Flame, Info } from "lucide-react";
 
 interface StreakDay {
   date: string;

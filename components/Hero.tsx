@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { signIn } from "next-auth/react";
 
@@ -331,7 +331,12 @@ export default function Hero() {
           <div className="relative rounded-3xl p-6 bg-white/30 backdrop-blur-sm border border-white/20 shadow-xl overflow-hidden w-full max-w-[480px]">
             {/* Soft inner glow behind canvas */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(209,250,229,0.2),transparent)] pointer-events-none" />
-            <canvas ref={canvasRef} className="block mx-auto max-w-full cursor-grab active:cursor-grabbing" />
+            <canvas
+              ref={canvasRef}
+              className="block mx-auto max-w-full cursor-grab active:cursor-grabbing"
+              role="img"
+              aria-label="Interactive 3D globe showing global carbon footprint visualization. Drag to rotate."
+            />
           </div>
         </motion.div>
       </div>

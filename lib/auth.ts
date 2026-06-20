@@ -12,8 +12,8 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || "mock-client-id",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "mock-client-secret",
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
     ...(process.env.NODE_ENV !== "production" ? [
       CredentialsProvider({
@@ -85,5 +85,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/login',
   },
-  secret: process.env.NEXTAUTH_SECRET || "some-really-long-fallback-secret-key-12345",
+  // NEXTAUTH_SECRET is REQUIRED in production — set it in .env.local
+  // Generate with: openssl rand -base64 32
+  secret: process.env.NEXTAUTH_SECRET,
 };

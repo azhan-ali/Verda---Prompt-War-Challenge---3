@@ -24,9 +24,10 @@ vi.mock("next-auth/react", () => ({
   signOut: vi.fn(),
 }));
 
-// Mock next/navigation
+// Mock next/navigation — include useSearchParams to support Navbar
 vi.mock("next/navigation", () => ({
   usePathname: () => "/",
+  useSearchParams: () => ({ get: (/* _key: string */) => null }),
 }));
 
 describe("Landing Page Components", () => {

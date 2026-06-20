@@ -62,14 +62,14 @@ describe("InsightsPanel Component", () => {
       expect(screen.getByText("Analysing your week...")).toBeDefined();
     });
 
-    // Results should appear after loading
+    // Results should appear after loading — find by data-testid
     await waitFor(() => {
-      const container = document.getElementById("insights-output-container");
-      expect(container).not.toBeNull();
-      expect(container?.textContent).toContain("Bangalore");
-      expect(container?.textContent).toContain("5 activities");
-      expect(container?.textContent).toContain("12.50");
-    });
+      const container = screen.getByTestId("insights-output-container");
+      expect(container).toBeDefined();
+      expect(container.textContent).toContain("Bangalore");
+      expect(container.textContent).toContain("5 logged");
+      expect(container.textContent).toContain("12.50");
+    }, { timeout: 5000 });
   });
 
   it("renders all three recommendation tips from API response", async () => {
@@ -82,11 +82,11 @@ describe("InsightsPanel Component", () => {
     fireEvent.click(screen.getByText("Generate My Insights"));
 
     await waitFor(() => {
-      const container = document.getElementById("insights-output-container");
-      expect(container?.textContent).toContain("Micro-Commute Switch");
-      expect(container?.textContent).toContain("Plant-Forward Meals");
-      expect(container?.textContent).toContain("Phantom Power Purge");
-    });
+      const container = screen.getByTestId("insights-output-container");
+      expect(container.textContent).toContain("Micro-Commute Switch");
+      expect(container.textContent).toContain("Plant-Forward Meals");
+      expect(container.textContent).toContain("Phantom Power Purge");
+    }, { timeout: 5000 });
   });
 
   it("handles fetch failure gracefully and displays an error message", async () => {

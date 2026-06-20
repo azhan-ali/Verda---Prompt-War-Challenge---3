@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowDown, ArrowUp, ShieldAlert, Award } from "lucide-react";
+import { Sparkles, ShieldAlert, Award } from "lucide-react";
 import { getCityBaseline } from "../lib/cityBaselines";
 
 interface BaselineBenchmarkProps {

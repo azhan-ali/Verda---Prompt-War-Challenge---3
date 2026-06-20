@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Share2, Clipboard, CheckCircle2 } from "lucide-react";
+import { Share2, CheckCircle2 } from "lucide-react";
 
 export interface ActivityItem {
   id: string;

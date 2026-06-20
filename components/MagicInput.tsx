@@ -201,6 +201,8 @@ export default function MagicInput({ onActivityLogged }: MagicInputProps) {
           <button
             type="button"
             onClick={handleToggleListening}
+            aria-label={isListening ? "Stop voice recording" : "Start voice recording"}
+            aria-pressed={isListening}
             className={`mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all duration-300 relative group cursor-pointer ${
               isListening
                 ? "bg-red-50 border-red-200 text-red-500 shadow-md shadow-red-100"
@@ -210,14 +212,14 @@ export default function MagicInput({ onActivityLogged }: MagicInputProps) {
           >
             {isListening ? (
               <>
-                <Mic className="h-5 w-5 animate-pulse" />
-                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <Mic className="h-5 w-5 animate-pulse" aria-hidden="true" />
+                <span className="absolute -top-1 -right-1 flex h-3 w-3" aria-hidden="true">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
                 </span>
               </>
             ) : (
-              <Mic className="h-5 w-5 transition-transform group-hover:scale-105" />
+              <Mic className="h-5 w-5 transition-transform group-hover:scale-105" aria-hidden="true" />
             )}
           </button>
 
@@ -231,6 +233,8 @@ export default function MagicInput({ onActivityLogged }: MagicInputProps) {
               onKeyDown={handleKeyDown}
               disabled={isLoading}
               placeholder={isListening ? "Listening... Speak naturally" : "Tell me what you did today..."}
+              aria-label="Describe your activity (e.g. drove 20km to work)"
+              aria-live={isListening ? "polite" : undefined}
               className="w-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-gray-800 placeholder-gray-400 text-base md:text-lg py-2.5 resize-none leading-relaxed min-h-[44px]"
             />
             

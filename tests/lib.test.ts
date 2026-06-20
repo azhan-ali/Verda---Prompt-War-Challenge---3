@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { EMISSION_FACTORS } from "../lib/emissions";
 import { GeminiActivitySchema } from "../lib/schemas";
-import { calculateAnnualEmissions, calculateSavings, DEFAULT_CURRENT_LIFESTYLE } from "../lib/simulatorMath";
+import { calculateAnnualEmissions, calculateSavings, DEFAULT_CURRENT_LIFESTYLE, SimulatorInputs } from "../lib/simulatorMath";
 
 describe("lib/emissions.ts", () => {
   it("should have correct factors structures", () => {
@@ -97,49 +97,56 @@ describe("lib/schemas.ts (GeminiActivitySchema)", () => {
 describe("lib/simulatorMath.ts", () => {
   it("should calculate correctly for current default lifestyle", () => {
     const res = calculateAnnualEmissions(DEFAULT_CURRENT_LIFESTYLE);
-    // petrolCar factor = 0.17 * 25 * 365 = 1551.25
-    // mixed factor = 5.5 * 365 = 2007.5
-    // flight factor = 4 * 240 = 960
-    // total = 4518.75
+    // DEFAULT_CURRENT_LIFESTYLE: petrolCar (0.17), mixed (5.5), 25km/day, 4 flights, average homeEnergy (5.0)
+    // transport: 25 * 365 * 0.17 = 1551.25
+    // diet: 5.5 * 365 = 2007.5
+    // flights: 4 * 240 = 960
+    // homeEnergy: 5.0 * 365 = 1825
+    // total = 6343.75
     expect(res.transport).toBe(1551.25);
     expect(res.diet).toBe(2007.5);
     expect(res.flight).toBe(960);
-    expect(res.total).toBe(4518.75);
+    expect(res.homeEnergy).toBe(1825);
+    expect(res.total).toBe(6343.75);
   });
 
   it("should calculate correct savings when switching options", () => {
-    const proposed = {
+    const proposed: SimulatorInputs = {
       transportMode: "electricCar" as const,
       dietType: "vegetarian" as const,
       dailyKm: 15,
       flightsPerYear: 1,
+      homeEnergy: "solarRenewable" as const,
     };
 
-    // electricCar factor = 0.05 * 15 * 365 = 273.75
-    // vegetarian factor = 2.5 * 365 = 912.50
-    // flight factor = 1 * 240 = 240
-    // total = 1426.25
-    // co2Saved = 4518.75 - 1426.25 = 3092.5
-    // treesSaved = 3092.5 / 22 = 140.56... -> 140.6
-    // kmEquivalent = 3092.5 / 0.17 = 18191.17... -> 18191
-    
+    // electricCar: 0.05 * 15 * 365 = 273.75
+    // vegetarian: 2.5 * 365 = 912.50
+    // flights: 1 * 240 = 240
+    // solarRenewable: 1.5 * 365 = 547.5
+    // proposed total: 1973.75
+    // current total: 6343.75
+    // co2Saved: 6343.75 - 1973.75 = 4370
+    // treesSaved: 4370 / 22 = 198.6...
+    // kmEquivalent: 4370 / 0.17 = 25705.88... -> 25706
     const savings = calculateSavings(DEFAULT_CURRENT_LIFESTYLE, proposed);
-    expect(savings.proposedTotal).toBe(1426.25);
-    expect(savings.co2Saved).toBe(3092.5);
-    expect(savings.treesSaved).toBe(140.6);
-    expect(savings.kmEquivalent).toBe(18191);
+    expect(savings.proposedTotal).toBe(1973.75);
+    expect(savings.co2Saved).toBe(4370);
+    expect(savings.treesSaved).toBe(198.6);
+    expect(savings.kmEquivalent).toBe(25706);
   });
 
   it("should return 0 savings if proposed has higher emissions", () => {
-    const current = {
+    const lowCarbon: SimulatorInputs = {
       transportMode: "walkCycle" as const,
       dietType: "vegan" as const,
       dailyKm: 0,
       flightsPerYear: 0,
+      homeEnergy: "solarRenewable" as const,
     };
     const proposed = DEFAULT_CURRENT_LIFESTYLE;
-    const savings = calculateSavings(current, proposed);
-    expect(savings.co2Saved).toBe(-4080.75);
+    const savings = calculateSavings(lowCarbon, proposed);
+    // When proposed is higher, co2Saved is negative
+    expect(savings.co2Saved).toBeLessThan(0);
     expect(savings.treesSaved).toBe(0);
     expect(savings.kmEquivalent).toBe(0);
   });

@@ -80,12 +80,11 @@ export default function DashboardClient({
     
     handleURLTab();
     
+    // Listen to back/forward navigation — no polling needed
     window.addEventListener("popstate", handleURLTab);
-    const interval = setInterval(handleURLTab, 300);
     
     return () => {
       window.removeEventListener("popstate", handleURLTab);
-      clearInterval(interval);
     };
   }, []);
 
@@ -406,13 +405,18 @@ export default function DashboardClient({
 
       {/* City Selection Modal */}
       {showCityModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="city-modal-title"
+        >
           <div className="mx-4 w-full max-w-md rounded-3xl border border-gray-100 bg-white/90 backdrop-blur-md p-8 shadow-card relative transform transition-all duration-300 scale-100">
             <div className="text-center mb-6">
-              <span className="inline-flex items-center justify-center rounded-full bg-emerald-50 p-3 text-2xl mb-4">
+              <span className="inline-flex items-center justify-center rounded-full bg-emerald-50 p-3 text-2xl mb-4" aria-hidden="true">
                 🌍
               </span>
-              <h2 className="font-display text-2xl font-bold text-[#111827]">
+              <h2 id="city-modal-title" className="font-display text-2xl font-bold text-[#111827]">
                 Select your city
               </h2>
               <p className="mt-2 text-sm text-gray-500">

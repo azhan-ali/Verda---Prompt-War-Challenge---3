@@ -45,5 +45,16 @@ Verda_PRD.docx
 Verda_PRD.md
 "VERDA_ROADMAP (2).md"
 VERDA_ROADMAP*.md
-dev.db
 extract_docx.py
+
+# SQLite / Local database files (NEVER commit these)
+*.db
+*.sqlite
+*.sqlite3
+dev.db
+prisma/*.db
+prisma/*.sqlite
+
+# Playwright test results
+test-results/
+playwright-report/

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Sparkles, BrainCircuit, RotateCcw, AlertCircle, Car, Leaf, Zap, TrendingDown, Trophy, Star, MapPin, FileDown } from "lucide-react";
+import { Sparkles, BrainCircuit, RotateCcw, AlertCircle, Car, Leaf, Zap, TrendingDown, Star, FileDown } from "lucide-react";
 import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 
@@ -151,12 +151,10 @@ function CategoryCard({
 }
 
 function TipCard({ tip, index }: { tip: InsightsTip; index: number }) {
-  const colors = ["#10B981", "#0ea5e9", "#8b5cf6"];
   const bgs = ["bg-emerald-500/10", "bg-sky-500/10", "bg-purple-500/10"];
   const borderColors = ["border-emerald-100", "border-sky-100", "border-purple-100"];
   const textColors = ["text-emerald-700", "text-sky-700", "text-purple-700"];
   
-  const color = colors[index % colors.length];
   const bg = bgs[index % bgs.length];
   const borderColor = borderColors[index % borderColors.length];
   const textColor = textColors[index % textColors.length];
@@ -420,6 +418,7 @@ export default function InsightsPanel() {
       {data && (
         <div
           id="verda-pdf-report"
+          data-testid="insights-output-container"
           aria-live="polite"
           className="space-y-8 animate-fade-in"
         >
